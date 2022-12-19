@@ -19,7 +19,7 @@ class MinecraftState(val config: MinecraftConfig) {
     val description: String
         get() = config.name?.let { "%s (%s)".format(it, config.account) } ?: config.account
 
-    val statusEmoji: String
+    val statusEmoji: net.dv8tion.jda.api.entities.emoji.Emoji
         get() = when {
             reconnectFuture?.isDone == false -> Emoji.HOURGLASS_DONE  // waiting to reconnect
             isConnected -> Emoji.GREEN_CIRCLE  // Green circle

@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.EventListener
+import net.dv8tion.jda.api.requests.GatewayIntent
 import org.slf4j.LoggerFactory
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
@@ -33,6 +34,7 @@ class Main(val config: BotConfig): EventListener {
     private val discordConfig = config.discord
     private val discord = JDABuilder.createDefault(discordConfig.token)
         .addEventListeners(this)
+        .enableIntents(GatewayIntent.MESSAGE_CONTENT)
         .build()
         .awaitReady()
 

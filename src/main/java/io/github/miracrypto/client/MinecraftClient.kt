@@ -2,10 +2,12 @@ package io.github.miracrypto.client
 
 import com.github.steveice10.mc.protocol.data.game.ClientCommand
 import com.github.steveice10.mc.protocol.data.game.entity.player.Hand
-import com.github.steveice10.mc.protocol.packet.ingame.clientbound.ClientboundChatPacket
 import com.github.steveice10.mc.protocol.packet.ingame.clientbound.ClientboundLoginPacket
+import com.github.steveice10.mc.protocol.packet.ingame.clientbound.ClientboundPlayerChatPacket
+import com.github.steveice10.mc.protocol.packet.ingame.clientbound.ClientboundSystemChatPacket
 import com.github.steveice10.mc.protocol.packet.ingame.clientbound.entity.player.ClientboundSetExperiencePacket
 import com.github.steveice10.mc.protocol.packet.ingame.clientbound.entity.player.ClientboundSetHealthPacket
+import com.github.steveice10.mc.protocol.packet.ingame.serverbound.ServerboundChatCommandPacket
 import com.github.steveice10.mc.protocol.packet.ingame.serverbound.ServerboundChatPacket
 import com.github.steveice10.mc.protocol.packet.ingame.serverbound.ServerboundClientCommandPacket
 import com.github.steveice10.mc.protocol.packet.ingame.serverbound.player.ServerboundSwingPacket
@@ -19,8 +21,10 @@ import io.github.miracrypto.NotReconnectableException
 import io.github.miracrypto.config.DiscordConfig
 import io.github.miracrypto.config.MinecraftConfig
 import io.github.miracrypto.translation
+import net.kyori.adventure.text.Component
 import org.slf4j.LoggerFactory
-import java.util.Collections
+import java.time.Instant
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
@@ -101,8 +105,16 @@ class MinecraftClient(
         }
     }
 
-    override fun packetReceived(client: MinecraftClient, packet: ClientboundChatPacket) {
-        chatBuffer.add(packet.message.translation)
+    override fun packetReceived(client: MinecraftClient, packet: ClientboundSystemChatPacket) {
+        handleChatMessage(client, packet.content)
+    }
+
+    override fun packetReceived(client: MinecraftClient, packet: ClientboundPlayerChatPacket) {
+        packet.unsignedContent?.let { handleChatMessage(client, it) }
+    }
+
+    private fun handleChatMessage(client: MinecraftClient, message: Component) {
+        chatBuffer.add(message.translation)
 
         chatEventFuture?.cancel(false)
         chatEventFuture = scheduler.schedule({
@@ -114,7 +126,7 @@ class MinecraftClient(
 
     fun useItem() {
         session.run {
-            send(ServerboundUseItemPacket(Hand.MAIN_HAND))
+            send(ServerboundUseItemPacket(Hand.MAIN_HAND, 0))
             send(ServerboundSwingPacket(Hand.MAIN_HAND))
         }
     }
@@ -124,6 +136,25 @@ class MinecraftClient(
     }
 
     fun sendChat(message: String) {
-        session.send(ServerboundChatPacket(message))
+        if (message.startsWith("/")) {
+            val command = message.substring(1)
+            session.send(ServerboundChatCommandPacket(
+                command,
+                Instant.now().toEpochMilli(),
+                0,
+                mutableListOf(),
+                0,
+                BitSet()
+            ))
+        } else {
+            session.send(ServerboundChatPacket(
+                message,
+                Instant.now().toEpochMilli(), // timestamp
+                0, // salt
+                byteArrayOf(), // signature
+                0,
+                BitSet()
+            ))
+        }
     }
 }

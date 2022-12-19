@@ -1,11 +1,11 @@
 package io.github.miracrypto.bot.modules
 
-import net.dv8tion.jda.api.JDA
-import io.github.miracrypto.config.modules.MobNotifyConfig
+import com.github.steveice10.mc.protocol.packet.ingame.clientbound.entity.spawn.ClientboundAddEntityPacket
 import io.github.miracrypto.client.ClientSessionAdapter
 import io.github.miracrypto.client.MinecraftClient
-import com.github.steveice10.mc.protocol.packet.ingame.clientbound.entity.spawn.ClientboundAddMobPacket
+import io.github.miracrypto.config.modules.MobNotifyConfig
 import io.github.miracrypto.translation
+import net.dv8tion.jda.api.JDA
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -16,7 +16,7 @@ class MobNotify(discord: JDA, var config: MobNotifyConfig) : ClientSessionAdapte
     private val notifyChannel = config.channel?.let { discord.getTextChannelById(it) }!!
     private val seenEntities: MutableSet<UUID> = mutableSetOf()
 
-    override fun packetReceived(client: MinecraftClient, packet: ClientboundAddMobPacket) {
+    override fun packetReceived(client: MinecraftClient, packet: ClientboundAddEntityPacket) {
         val mobId = packet.type.toString().lowercase()
         if (mobId in config.entityTypes && packet.uuid !in seenEntities) {
             val mobName = "entity.minecraft.$mobId".translation

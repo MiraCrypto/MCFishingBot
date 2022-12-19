@@ -1,12 +1,14 @@
 package io.github.miracrypto.bot
+import net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode;
+
 
 object Emoji {
-    const val SKULL = "\uD83D\uDC80"
-    const val GREEN_CIRCLE = "🟢"
-    const val RED_CIRCLE = "\uD83D\uDD34"
-    const val CROSS_MARK = "❌"
-    const val PROHIBITED = "\uD83D\uDEAB"
-    const val OK_BUTTON = "\uD83C\uDD97"
-    const val CHECK_MARK_BUTTON = "✅"
-    const val HOURGLASS_DONE = "⌛"
+    val SKULL = fromUnicode("\uD83D\uDC80")
+    val GREEN_CIRCLE = fromUnicode("🟢")
+    val RED_CIRCLE = fromUnicode("\uD83D\uDD34")
+    val CROSS_MARK = fromUnicode("❌")
+    val PROHIBITED = fromUnicode("\uD83D\uDEAB")
+    val OK_BUTTON = fromUnicode("\uD83C\uDD97")
+    val CHECK_MARK_BUTTON = fromUnicode("✅")
+    val HOURGLASS_DONE = fromUnicode("⌛")
 }
