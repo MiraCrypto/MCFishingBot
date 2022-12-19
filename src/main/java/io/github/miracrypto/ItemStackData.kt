@@ -15,7 +15,7 @@ val ItemStack.itemId: String
 val ItemStack.enchantmentsDescription: String
     get() = this.enchantments.map { (id, level) ->
         val name = "enchantment.${id.replace(":", ".")}".translation
-        return if (level > 1) "$name $level" else name
+        if (level > 1) "$name $level" else name
     }
         .sorted()
         .joinToString(", ")

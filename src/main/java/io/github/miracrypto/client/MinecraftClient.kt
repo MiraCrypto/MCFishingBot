@@ -150,9 +150,9 @@ class MinecraftClient(
             session.send(ServerboundChatPacket(
                 message,
                 Instant.now().toEpochMilli(), // timestamp
-                0, // salt
-                byteArrayOf(), // signature
-                0,
+                0L, // salt
+                null, // signature
+                0, // offset
                 BitSet()
             ))
         }
