@@ -1,6 +1,6 @@
 package io.github.miracrypto.client
 
-import com.github.steveice10.mc.protocol.packet.ingame.clientbound.ClientboundDisconnectPacket
+import com.github.steveice10.mc.protocol.packet.common.clientbound.ClientboundDisconnectPacket
 import com.github.steveice10.mc.protocol.packet.ingame.clientbound.ClientboundLoginPacket
 import com.github.steveice10.mc.protocol.packet.ingame.clientbound.ClientboundPlayerChatPacket
 import com.github.steveice10.mc.protocol.packet.ingame.clientbound.ClientboundSystemChatPacket

@@ -1,6 +1,6 @@
 package io.github.miracrypto.bot
 
-import com.github.steveice10.mc.protocol.packet.ingame.clientbound.ClientboundDisconnectPacket
+import com.github.steveice10.mc.protocol.packet.common.clientbound.ClientboundDisconnectPacket
 import com.github.steveice10.mc.protocol.packet.login.clientbound.ClientboundLoginDisconnectPacket
 import com.github.steveice10.packetlib.event.session.ConnectedEvent
 import com.github.steveice10.packetlib.event.session.DisconnectedEvent

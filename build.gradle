@@ -18,9 +18,8 @@ mainClassName = 'io.github.miracrypto.MinecraftBotMainKt'
 
 dependencies {
     implementation("com.github.steveice10:mcprotocollib:${version}") {
-        exclude module: 'mcauthlib'
+        exclude module: 'netty-incubator-transport-native-io_uring'
     }
-    implementation "com.github.GeyserMC:mcauthlib:6621fd0"
 
     implementation 'org.slf4j:slf4j-jdk14:2.0.5'
     implementation 'net.kyori:adventure-text-serializer-plain:4.12.0'
